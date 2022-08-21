@@ -1,28 +1,20 @@
-import { MatchReader, MatchData } from "./MatchReader"
 import { CsvFileReader } from "./CsvFileReader"
-import { Outcome } from "./Outcome"
+import { MatchReader } from "./MatchReader"
+import { ConsoleReport } from "./Reporters/ConsoleReport"
+import { WinsAnalysis } from "./Analyzers/WinsAnalysis"
+import { Summary } from "./Summary"
 
-// check if the given team won the match
-const isWinner = (team: string, match: MatchData): boolean => {
-  const winner: Outcome = match[5] as Outcome
-  const homeTeam = match[1] // team playing at Home
-  const awayTeam = match[2] // team playing Away
-  return (
-    (homeTeam === team && winner === Outcome.HomeWin) ||
-    (awayTeam === team && winner === Outcome.AwayWin)
-  )
-}
 // Create an object that satisfies the DataReader interface
 const reader = new CsvFileReader("football.csv")
 
-// Create an instance of MatchReader passing it an object that satisfies the DataReader interface
+// Create an instance of MatchReader and pass it something that satisfies the DataReader interface
 const matchesReader = new MatchReader(reader)
 matchesReader.load()
 
-// count how many times the given team has won a game
-const manchesterUnitedWins: number = matchesReader.matches.filter(
-  (match: MatchData) => isWinner("Man United", match)
-).length
+// Build and Show the data
+const summary = new Summary(
+  new WinsAnalysis("Bournemouth"),
+  new ConsoleReport()
+)
 
-console.log(manchesterUnitedWins)
-console.log(reader.data[1])
+summary.buildAndPrintReport(matchesReader.matches)

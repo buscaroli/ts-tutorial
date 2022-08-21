@@ -1,7 +1,6 @@
 import { dateStringtoDate } from "./utils"
 import { Outcome } from "./Outcome"
-
-export type MatchData = [Date, string, string, number, number, Outcome, string]
+import { MatchData } from "./MatchData"
 
 interface DataReader {
   read(): void
