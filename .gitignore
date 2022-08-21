@@ -4,3 +4,4 @@ maps/.cache
 .vscode
 maps/dist
 sort/build
+stats/build
